@@ -1,28 +1,30 @@
+version: '1'
+
 stages:
+  - name: ZAP DAST Scan
 
-- name: Dynamic Scan
+    jobs:
+      - name: Run-ZAP
 
-  inputs:
-    - type: git
+        type: builder
 
-  jobs:
+        image: ghcr.io/zaproxy/zaproxy:stable
 
-    - name: zap-scan
+        script: |
+          #!/bin/bash
+          set -euxo pipefail
 
-      type: builder
+          chmod +x scripts/run-zap.sh
 
-      build_type: shell
+          ./scripts/run-zap.sh
 
-      script: |
-        #!/bin/bash
+          mkdir -p artifacts
 
-        set -e
+          cp /zap/wrk/reports/zap-report.html artifacts/
 
-        podman run --rm \
-          -e W3ID_USERNAME="$W3ID_USERNAME" \
-          -e W3ID_PASSWORD="$W3ID_PASSWORD" \
-          -v $(pwd)/zap:/zap/wrk \
-          ghcr.io/zaproxy/zaproxy:stable \
-          zap.sh \
-          -cmd \
-          -autorun /zap/wrk/automation.yaml
+          echo "Artifact contents:"
+          ls -lah artifacts/
+
+        artifacts:
+          paths:
+            - artifacts/zap-report.html
