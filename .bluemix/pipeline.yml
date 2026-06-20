@@ -1,0 +1,28 @@
+stages:
+
+- name: Dynamic Scan
+
+  inputs:
+    - type: git
+
+  jobs:
+
+    - name: zap-scan
+
+      type: builder
+
+      build_type: shell
+
+      script: |
+        #!/bin/bash
+
+        set -e
+
+        podman run --rm \
+          -e W3ID_USERNAME="$W3ID_USERNAME" \
+          -e W3ID_PASSWORD="$W3ID_PASSWORD" \
+          -v $(pwd)/zap:/zap/wrk \
+          ghcr.io/zaproxy/zaproxy:stable \
+          zap.sh \
+          -cmd \
+          -autorun /zap/wrk/automation.yaml
