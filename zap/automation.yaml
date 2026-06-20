@@ -1,6 +1,24 @@
 env:
   contexts:
     - name: DocEnrich
+      urls:
+        - https://doc-enrich-frontend-document-enrichment.ae-sap-cluster-test-2322d3421b77f2abeee72f9925acd471-0000.us-south.containers.appdomain.cloud
+
+jobs:
+
+  - type: spider
+    parameters:
+      maxDuration: 5
+
+  - type: passiveScan-wait
+
+  - type: report
+    parameters:
+      template: traditional-html
+      reportDir: /zap/wrk/reports
+      reportFile: zap-report.htmlenv:
+  contexts:
+    - name: DocEnrich
 
       urls:
         - https://doc-enrich-frontend-document-enrichment.ae-sap-cluster-test-2322d3421b77f2abeee72f9925acd471-0000.us-south.containers.appdomain.cloud
