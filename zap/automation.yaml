@@ -1,39 +1,16 @@
 env:
   contexts:
     - name: DocEnrich
-
       urls:
         - https://doc-enrich-frontend-document-enrichment.ae-sap-cluster-test-2322d3421b77f2abeee72f9925acd471-0000.us-south.containers.appdomain.cloud
 
-      includePaths:
-        - .*
-
-      authentication:
-        method: browser
-
-        parameters:
-          loginPageUrl: "https://doc-enrich-frontend-document-enrichment.ae-sap-cluster-test-2322d3421b77f2abeee72f9925acd471-0000.us-south.containers.appdomain.cloud"
-          script: "/zap/wrk/doc-enrich-zap-dast/zap/w3id_auth.js"
-
-      users:
-        - name: testuser
-          credentials:
-            username: ${W3ID_USERNAME}
-            password: ${W3ID_PASSWORD}
-
 jobs:
 
-  - type: spiderAjax
+  - type: spider
     parameters:
-      context: DocEnrich
-      user: testuser
-      maxDuration: 20
+      maxDuration: 2
 
-  - type: activeScan
-    parameters:
-      context: DocEnrich
-      user: testuser
-      maxRuleDurationInMins: 5
+  - type: passiveScan-wait
 
   - type: report
     parameters:
