@@ -13,4 +13,6 @@ zap.sh -cmd \
   -autorun /zap/wrk/doc-enrich-zap-dast/zap/automation.yaml
 
 echo "Reports"
-ls -lah /zap/wrk/reports || true
+ls -lah /zap/wrk/reports
+
+test -f /zap/wrk/reports/zap-report.html
